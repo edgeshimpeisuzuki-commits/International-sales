@@ -1,0 +1,24 @@
+# 標準パラメータ(定義書「標準パラメータ」タブが正本。数値はすべて仮置き)
+scoring:            # D06-01
+  weights: {fit: 40, volume: 30, category_track_record: 20, contact_quality: 10}
+  rank_a_min: 70
+  rank_b_min: 50
+outreach:           # D06-03
+  body_words: [50, 100]
+  follow_up_days: [4, 10]
+  max_follow_ups: 2
+  sg_subject_prefix: "<ADV> "
+stop_rules:         # D06-03, D14-17
+  bounce_rate_stop: 0.02
+  spam_complaints_slowdown: 1
+reply_classification:   # D06-04
+  confidence_to_human: 0.8
+meeting:            # D06-21
+  length_minutes: [30, 60]
+  buffer_minutes: 15
+  min_business_days_ahead: 2
+  slots_to_offer: 3
+  hold_expiry_hours: 48
+proposal:           # D06-20
+  submit_for_approval_business_days_before: 2
+  target_slides: 10

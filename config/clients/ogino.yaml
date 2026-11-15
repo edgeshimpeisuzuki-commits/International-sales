@@ -1,0 +1,13 @@
+# クライアント設定:荻野商店(定義書「クライアント設定:荻野商店」タブが正本)
+client: 荻野商店
+model: agency            # 代理モデル
+sender:
+  display_name: "荻野商店の海外営業代理 鈴木晋平"   # 決定済みA2
+  address_env: OGINO_SALES_ADDRESS                  # 荻野商店の海外営業用アドレス1つ(11/15決定)
+  same_domain_as_core_business: unknown             # 要確認
+daily_send_cap:
+  warmup_start: [5, 10]
+  target: [20, 40]
+  warmup_weeks: [2, 4]
+target_countries: [SG, HK, MY, US]
+price_list: "11/01版"

@@ -1,0 +1,8 @@
+.env
+data/*
+!data/.gitkeep
+*.csv
+*.xlsx
+.DS_Store
+node_modules/
+__pycache__/

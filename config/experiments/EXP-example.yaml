@@ -1,0 +1,12 @@
+experiment_id: EXP-20261201-subject
+status: draft            # draft / approved / running / decided / stopped
+client: ogino
+countries: [SG]
+variable: subject        # 変えるのは1つだけ
+variants:
+  A: {template_id: OGN-INTRO-01, subject: "Japanese hojicha powder for your seasonal menu"}
+  B: {template_id: OGN-INTRO-01, subject: "<company> x Uji-grown hojicha: a sample for your team"}
+assignment: {unit: company, stratify_by: [country, rank]}
+primary_metric: positive_reply_rate
+guardrails: {complaints_stop: 1, unsubscribe_rate_stop: 0.02}
+decision: {min_delivered_per_arm: 100, switch_prob: 0.90, confirm_prob: 0.95, max_per_arm: 300}
