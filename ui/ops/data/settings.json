@@ -1,0 +1,240 @@
+{
+ "rows": [
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "scoring.weights.fit",
+   "値": "40"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "scoring.weights.volume",
+   "値": "30"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "scoring.weights.category_track_record",
+   "値": "20"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "scoring.weights.contact_quality",
+   "値": "10"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "scoring.rank_a_min",
+   "値": "70"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "scoring.rank_b_min",
+   "値": "50"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "outreach.body_words",
+   "値": "[50, 100]"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "outreach.follow_up_days",
+   "値": "[4, 10]"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "outreach.max_follow_ups",
+   "値": "2"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "outreach.sg_subject_prefix",
+   "値": "<ADV> "
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "stop_rules.bounce_rate_stop",
+   "値": "0.02"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "stop_rules.spam_complaints_slowdown",
+   "値": "1"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "stop_rules.spam_complaints_stop_per_week",
+   "値": "2"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "stop_rules.unsubscribe_reflect_hours",
+   "値": "24"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "stop_rules.no_contact_after_no_response_days",
+   "値": "180"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "stop_rules.recontact_after_days",
+   "値": "60"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "reply_classification.confidence_to_human",
+   "値": "0.8"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "meeting.length_minutes",
+   "値": "[30, 60]"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "meeting.buffer_minutes",
+   "値": "15"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "meeting.min_days_ahead",
+   "値": "4"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "meeting.reminders_hours_before",
+   "値": "[24, 1]"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "meeting.slots_to_offer",
+   "値": "3"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "meeting.hold_expiry_hours",
+   "値": "48"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "proposal.submit_for_approval_hours_before",
+   "値": "48"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "proposal.human_check_hours_before",
+   "値": "24"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "proposal.target_slides",
+   "値": "10"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "watchdog.alert_hours_without_completion",
+   "値": "12"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "watchdog.manual_takeover_hours",
+   "値": "24"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "approval_backlog_alert",
+   "値": "20"
+  },
+  {
+   "ファイル": "config/standard-params.yaml",
+   "項目": "service_delivery.acceptance_reply_days",
+   "値": "10"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "client",
+   "値": "荻野商店"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "model",
+   "値": "agency"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "sender.display_name",
+   "値": "荻野商店の海外営業代理 鈴木晋平"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "sender.address_env",
+   "値": "OGINO_SALES_ADDRESS"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "sender.same_domain_as_core_business",
+   "値": "unknown"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "daily_send_cap.warmup_start",
+   "値": "[5, 10]"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "daily_send_cap.target",
+   "値": "[20, 40]"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "daily_send_cap.warmup_weeks",
+   "値": "[2, 4]"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "target_countries",
+   "値": "[\"SG\", \"HK\", \"MY\", \"US\"]"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "price_list",
+   "値": "11/01版"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "status",
+   "値": "active"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "ledger_env",
+   "値": "LEDGER_SHEET_ID"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "icp_wave1",
+   "値": "[\"importer_wholesaler\", \"self_importing_food_beverage_maker\"]"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "pilot_country",
+   "値": "SG"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "samples.product_cost",
+   "値": "client"
+  },
+  {
+   "ファイル": "config/clients/ogino.yaml",
+   "項目": "samples.shipping",
+   "値": "per_case_approval"
+  }
+ ],
+ "meta": [
+  {
+   "label": "出典",
+   "value": "GitHub edgeshimpeisuzuki-commits/International-sales (main f267ffe, 2026-11-16)"
+  }
+ ]
+}

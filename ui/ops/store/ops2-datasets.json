@@ -1,0 +1,101 @@
+[
+ {
+  "op": "set",
+  "path": "datasets/agents",
+  "data": {
+   "title": "組織:エージェント",
+   "description": "部門長・課・共通エージェントと部門定義(リポジトリの写し)",
+   "source": {
+    "kind": "file",
+    "url": "/_blob/1a875dc74c83647973e8b45886082b69",
+    "name": "agents.json",
+    "format": "json"
+   },
+   "updated": {
+    "at": "2026-11-16T12:30:00Z",
+    "by": "claude"
+   },
+   "schedule": "指示文や設定を変えたときに差し替える",
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-16T12:30:00Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/skills",
+  "data": {
+   "title": "組織:業務スキル",
+   "description": "スキルごとの業務ID・フェーズ・自律度(リポジトリの写し)",
+   "source": {
+    "kind": "file",
+    "url": "/_blob/12ad00d50221a4fb2a56c80e2ada0be4",
+    "name": "skills.json",
+    "format": "json"
+   },
+   "updated": {
+    "at": "2026-11-16T12:30:00Z",
+    "by": "claude"
+   },
+   "schedule": "指示文や設定を変えたときに差し替える",
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-16T12:30:00Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/settings",
+  "data": {
+   "title": "設定",
+   "description": "標準パラメータとクライアント設定(リポジトリの写し)",
+   "source": {
+    "kind": "file",
+    "url": "/_blob/9a1a1167a633909bc483654e86d9dfff",
+    "name": "settings.json",
+    "format": "json"
+   },
+   "updated": {
+    "at": "2026-11-16T12:30:00Z",
+    "by": "claude"
+   },
+   "schedule": "指示文や設定を変えたときに差し替える",
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-16T12:30:00Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/tests",
+  "data": {
+   "title": "テスト結果",
+   "description": "11/16のP1全スキルのテストの結果",
+   "source": {
+    "kind": "file",
+    "url": "/_blob/dbf2c73a476f6c46a9bbbb12da6a1fa3",
+    "name": "tests.json",
+    "format": "json"
+   },
+   "updated": {
+    "at": "2026-11-16T12:30:00Z",
+    "by": "claude"
+   },
+   "schedule": "指示文や設定を変えたときに差し替える",
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-16T12:30:00Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "dash/params",
+  "data": {
+   "dept": "D06"
+  }
+ }
+]

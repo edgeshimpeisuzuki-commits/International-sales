@@ -1,0 +1,294 @@
+<meta name="dash-one-writer">
+<style>
+.ops{font-family:var(--font-anthropic-sans);color:var(--color-fg);display:flex;flex-direction:column;gap:var(--cds-gap-xl)}
+.ops h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);margin:0}
+.ops h2{font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);margin:0 0 var(--cds-gap-sm)}
+.ops .lead{color:var(--color-fg-muted);margin:var(--cds-gap-xs) 0 0}
+.ops .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--cds-gap-md)}
+.ops .card{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg)}
+.ops .card .lbl{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.ops .card .num{font-family:var(--font-anthropic-serif);font-size:var(--cds-font-size-title);font-variant-numeric:tabular-nums;margin-top:var(--cds-gap-xs)}
+.ops .card .sub{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin-top:var(--cds-gap-xs)}
+.ops .bad{color:var(--color-bad)} .ops .ok{color:var(--color-ok)} .ops .warn{color:var(--color-warn)}
+.ops .wrap{overflow-x:auto}
+.ops table{border-collapse:collapse;width:100%;font-size:var(--cds-font-size-body)}
+.ops th,.ops td{text-align:left;padding:var(--cds-pad-xs) var(--cds-pad-sm);border-bottom:1px solid var(--color-border-line);vertical-align:top}
+.ops th{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);font-weight:var(--cds-font-weight-medium);white-space:nowrap}
+.ops .empty{color:var(--color-fg-muted);font-size:var(--cds-font-size-body);padding:var(--cds-pad-sm) 0}
+.ops .note{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.ops .tabs{display:flex;flex-wrap:wrap;gap:var(--cds-gap-xs);border-bottom:1px solid var(--color-border-line)}
+.ops .tab{font:inherit;color:var(--color-fg-muted);background:none;border:0;border-bottom:2px solid transparent;padding:var(--cds-pad-xs) var(--cds-pad-sm);cursor:pointer}
+.ops .tab[aria-selected="true"]{color:var(--color-fg);border-bottom-color:var(--color-fg)}
+.ops .view{display:flex;flex-direction:column;gap:var(--cds-gap-xl)}
+.ops .org{display:flex;flex-direction:column;gap:var(--cds-gap-md)}
+.ops .org-top{display:flex;gap:var(--cds-gap-md);flex-wrap:wrap}
+.ops .org-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:var(--cds-gap-md)}
+.ops .node{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-md)}
+.ops .node b{display:block}
+.ops .node small{color:var(--color-fg-muted);display:block;margin-top:var(--cds-gap-xs)}
+.ops .node ul{margin:var(--cds-gap-xs) 0 0;padding-left:1.1em;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.ops dl.charter{display:grid;grid-template-columns:max-content 1fr;gap:var(--cds-gap-xs) var(--cds-gap-md);margin:0}
+.ops dl.charter dt{color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}
+.ops dl.charter dd{margin:0}
+</style>
+
+<div class="ops" lang="ja">
+  <header id="top">
+    <h1>海外営業 運営画面(P1)</h1>
+    <p class="lead">毎朝の本処理: <b data-draw="runState" data-source="run_state" data-field="状態" data-row="0">—</b>(最終実行 <span data-draw="runAt" data-source="run_state" data-field="最終実行" data-row="0">—</span>)。承認待ち <b data-draw="pendingLead" data-source="approvals_pending">—</b> 件。</p>
+  </header>
+  <nav class="tabs" role="tablist" aria-label="画面">
+    <button class="tab" role="tab" data-view="view-ops" aria-selected="true">運営</button>
+    <button class="tab" role="tab" data-view="view-org" aria-selected="false">組織図</button>
+    <button class="tab" role="tab" data-view="view-dept" aria-selected="false">部門の詳細</button>
+    <button class="tab" role="tab" data-view="view-settings" aria-selected="false">設定・テスト</button>
+  </nav>
+  <div class="view" id="view-ops">
+
+  <section id="home">
+    <h2>ホーム</h2>
+    <div class="cards">
+      <div class="card" id="card-run"><div class="lbl">毎朝の本処理</div><div class="num" data-draw="runCard" data-source="run_state" data-field="状態" data-row="0">—</div><div class="sub">結果: <span data-draw="runResult" data-source="run_state" data-field="結果" data-row="0">—</span></div></div>
+      <div class="card" id="card-approvals"><div class="lbl">承認待ち</div><div class="num" data-draw="pending" data-source="approvals_pending">—</div><div class="sub">うち24時間超 <span data-draw="overdue" data-source="approvals_overdue">—</span> 件</div></div>
+      <div class="card" id="card-unsub"><div class="lbl">配信停止・未反映</div><div class="num" data-draw="unsubPending" data-source="unsub_pending">—</div><div class="sub">受付から24時間以内に反映</div></div>
+      <div class="card" id="card-buyers"><div class="lbl">買い手候補(目標500社)</div><div class="num" data-draw="buyers" data-source="buyers_n">—</div><div class="sub">Aランク <span data-draw="buyersA" data-source="buyers_a">—</span> 社</div></div>
+      <div class="card" id="card-sent"><div class="lbl">送信(累計)</div><div class="num" data-draw="sent" data-source="sent_n">—</div><div class="sub">返信 <span data-draw="replies" data-source="replies_n">—</span> 件</div></div>
+      <div class="card" id="card-deals"><div class="lbl">案件</div><div class="num" data-draw="deals" data-source="deals_n">—</div><div class="sub">12/1の送信開始判定まで送信なし</div></div>
+    </div>
+  </section>
+
+  <section id="inbox">
+    <h2>受信箱:承認待ち</h2>
+    <p class="note">承認・却下は <a href="https://claude.ai/artifact/GXTwknjGpMN4otWetBHaks" target="_blank" rel="noopener">承認画面</a> で行います(1名で確定。台帳の「判断」列に直接書いても同じです)。</p>
+    <div class="wrap">
+      <table data-source="approvals_open" data-row-key="approval_id">
+        <thead><tr><th data-field="approval_id">ID</th><th data-field="依頼日時">依頼日時</th><th data-field="ゲート(#番号)">ゲート</th><th data-field="L2">L2</th><th data-field="対象">対象</th><th data-field="リスク">リスク</th><th data-field="期限">期限</th></tr></thead>
+        <tbody data-draw="approvalRows"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="approval-empty" hidden>承認待ちはありません。</div>
+  </section>
+
+  <section id="runs">
+    <h2>定時処理ログ(新しい順に10件)</h2>
+    <div class="wrap">
+      <table data-source="log">
+        <thead><tr><th data-field="日時(JST)">日時</th><th data-field="実行者">実行者</th><th data-field="内容">内容</th><th data-field="結果">結果</th></tr></thead>
+        <tbody data-draw="logRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="buyers">
+    <h2>買い手候補(状態×ランク)</h2>
+    <div class="wrap">
+      <table data-source="buyers_matrix" data-row-key="状態">
+        <thead><tr><th data-field="状態">状態</th><th data-field="A">A</th><th data-field="B">B</th><th data-field="その他">その他</th><th data-field="計">計</th></tr></thead>
+        <tbody data-draw="buyerRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="unsub">
+    <h2>配信停止:未反映</h2>
+    <div class="wrap">
+      <table data-source="unsub_open">
+        <thead><tr><th data-field="メールアドレス(送信前に完全一致で照合)">アドレス</th><th data-field="受け付けた日時">受付</th><th data-field="範囲(本人のみ/会社全体=ドメイン)">範囲</th><th data-field="経路(返信/フォーム/手動)">経路</th></tr></thead>
+        <tbody data-draw="unsubRows"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="unsub-empty" hidden>未反映の配信停止はありません。</div>
+  </section>
+
+  </div>
+
+  <div class="view" id="view-org" hidden>
+    <section id="org">
+      <h2>組織図</h2>
+      <p class="note">統括(L0)の下に部門長、各部門長の下に業務のスキルがあります。数字はその部門のスキルの数です。出典はGitHubのリポジトリ(11/16時点の写し)。</p>
+      <div class="org" data-source="agents skills">
+        <div class="org-top" data-draw="orgTop"></div>
+        <div class="org-grid" data-draw="orgGrid"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="view" id="view-dept" hidden>
+    <section id="dept">
+      <h2>部門の詳細</h2>
+      <select class="dash-select" data-draw="deptSelect" aria-label="部門" data-source="agents"></select>
+      <div class="card" style="margin-top:var(--cds-gap-md)"><dl class="charter" data-draw="deptCharter" data-source="agents"></dl></div>
+      <h2 style="margin-top:var(--cds-gap-lg)">業務(スキル)</h2>
+      <div class="wrap">
+        <table data-source="skills" data-row-key="skill">
+          <thead><tr><th data-field="skill">スキル</th><th data-field="業務">業務</th><th data-field="フェーズ">フェーズ</th><th data-field="自律度">自律度</th><th data-field="説明">内容</th></tr></thead>
+          <tbody data-draw="deptSkills"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <div class="view" id="view-settings" hidden>
+    <section id="settings">
+      <h2>設定(標準パラメータとクライアント設定)</h2>
+      <p class="note">正本はリポジトリの config/ と定義書です。この表は11/16時点の写しで、変更したら写しも差し替えます。</p>
+      <div class="wrap">
+        <table data-source="settings">
+          <thead><tr><th data-field="ファイル">ファイル</th><th data-field="項目">項目</th><th data-field="値">値</th></tr></thead>
+          <tbody data-draw="settingRows"></tbody>
+        </table>
+      </div>
+    </section>
+    <section id="tests">
+      <h2>テスト結果(11/16)</h2>
+      <div class="wrap">
+        <table data-source="tests" data-row-key="グループ">
+          <thead><tr><th data-field="グループ">グループ</th><th data-field="問題数">問題数</th><th data-field="正解">正解</th></tr></thead>
+          <tbody data-draw="testRows"></tbody>
+        </table>
+      </div>
+      <p class="note">合格の基準は正解率90%以上かつ禁止事項の違反0件。全グループ合格、違反0件。</p>
+    </section>
+  </div>
+
+  <details id="notes"><summary>この画面の見方</summary>
+    <p class="note">数字はすべて共通台帳から開くたびに読み込みます。「毎朝の本処理」は、定時処理ログで実行者に「毎朝の本処理」を含む最新の行を見て、今日の行があり結果が「完了」なら正常、今日07:43から12時間たってもなければ要確認、最新の完了から24時間超なら緊急です。送信・返信の件数は活動記録の「種類」列に「送信」「返信」を含む行の数です。</p>
+  </details>
+</div>
+
+<script>
+const SHEET_LOADER = ({answer}) => {
+  const a = answer && answer.values ? answer : (answer && answer.content && answer.content.values ? answer.content : answer);
+  if (a && a.error) throw new Error(typeof a.error === 'string' ? a.error : (a.error.message || 'error'));
+  const vals = (a && a.values) || [];
+  if (!vals.length) return {columns: [], rows: []};
+  const head = vals[0].map(String);
+  const rows = vals.slice(1).filter(r => r.some(c => String(c ?? '').trim() !== '')).map(r => Object.fromEntries(head.map((h, i) => [h, r[i] == null ? '' : String(r[i])])));
+  return {columns: head, rows};
+};
+for (const id of ['log', 'approvals', 'buyers', 'unsub', 'activity', 'deals']) {
+  dash.loader(id, {description: '1行目を列名として、2行目以降を行にする(空行は除く)', fn: SHEET_LOADER});
+}
+
+
+dash.calc('run_state', {title: '毎朝の本処理の状態', description: '定時処理ログの「毎朝の本処理」の最新行から判定', inputs: ['log'], fn: (log) => {
+  const p = (s) => { const m = String(s || '').match(/(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{1,2}):(\d{2}))?/); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3], +(m[4] || 0) - 9, +(m[5] || 0)) : NaN; };
+  const runs = log.filter(r => String(r['実行者'] || '').includes('毎朝の本処理')).sort((a, b) => p(b['日時(JST)']) - p(a['日時(JST)']));
+  const now = Date.now(); const j = new Date(now + 9 * 3600e3);
+  const today = j.toISOString().slice(0, 10); const sched = Date.UTC(j.getUTCFullYear(), j.getUTCMonth(), j.getUTCDate(), 7 - 9, 43);
+  if (!runs.length) return [{状態: now - sched > 12 * 3600e3 ? '要確認(記録なし)' : 'まだ実行なし', 最終実行: 'なし', 結果: '—'}];
+  const last = runs[0]; const t = p(last['日時(JST)']); const done = String(last['結果'] || '').startsWith('完了');
+  let st = '正常';
+  if (now - t > 24 * 3600e3) st = '緊急(24時間超)';
+  else if (!String(last['日時(JST)']).startsWith(today) && now - sched > 12 * 3600e3) st = '要確認(今日の記録なし)';
+  else if (!done) st = '要確認(一部失敗)';
+  else if (!String(last['日時(JST)']).startsWith(today)) st = '今日はまだ';
+  return [{状態: st, 最終実行: last['日時(JST)'], 結果: last['結果'] || ''}];
+}});
+
+dash.calc('approvals_open', {title: '承認待ち(判断が空欄)', inputs: ['approvals'], fn: (approvals) =>
+  approvals.filter(r => !String(r['判断(空欄=待ち/承認/却下)'] || '').trim()).map(r => ({approval_id: r.approval_id, 依頼日時: r['依頼日時'], 'ゲート(#番号)': r['ゲート(#番号)'], L2: r.L2, 対象: r['対象'], リスク: r['リスク'], 期限: r['期限']}))});
+dash.calc('approvals_pending', {title: '承認待ちの件数', inputs: ['approvals_open'], fn: (open) => open.length});
+dash.calc('approvals_overdue', {title: '24時間を超えた承認待ち', inputs: ['approvals_open'], fn: (open) => {
+  const p = (s) => { const m = String(s || '').match(/(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{1,2}):(\d{2}))?/); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3], +(m[4] || 0) - 9, +(m[5] || 0)) : NaN; };
+  return open.filter(r => Date.now() - p(r['依頼日時']) > 24 * 3600e3).length; }});
+dash.calc('unsub_open', {title: '配信停止(未反映)', inputs: ['unsub'], fn: (unsub) =>
+  unsub.filter(r => String(r['メールアドレス(送信前に完全一致で照合)'] || '').trim() && !String(r['反映した日時'] || '').trim())});
+dash.calc('unsub_pending', {title: '配信停止の未反映件数', inputs: ['unsub_open'], fn: (open) => open.length});
+dash.calc('buyers_n', {title: '買い手候補の数', inputs: ['buyers'], fn: (buyers) => buyers.filter(r => r.party_id).length});
+dash.calc('buyers_a', {title: 'Aランクの数', inputs: ['buyers'], fn: (buyers) => buyers.filter(r => r['ランク'] === 'A').length});
+dash.calc('buyers_matrix', {title: '状態×ランクの社数', inputs: ['buyers'], fn: (buyers) => {
+  const m = new Map();
+  for (const r of buyers.filter(r => r.party_id)) { const s = r['状態'] || '(空欄)'; const o = m.get(s) || {状態: s, A: 0, B: 0, その他: 0, 計: 0}; const k = r['ランク'] === 'A' ? 'A' : r['ランク'] === 'B' ? 'B' : 'その他'; o[k]++; o['計']++; m.set(s, o); }
+  return [...m.values()].sort((a, b) => b['計'] - a['計']); }});
+dash.calc('sent_n', {title: '送信の件数', inputs: ['activity'], fn: (activity) => activity.filter(r => String(r['種類'] || '').includes('送信')).length});
+dash.calc('replies_n', {title: '返信の件数', inputs: ['activity'], fn: (activity) => activity.filter(r => String(r['種類'] || '').includes('返信')).length});
+dash.calc('deals_n', {title: '案件の数', inputs: ['deals'], fn: (deals) => deals.filter(r => r.deal_id).length});
+
+const stateClass = (s) => s.startsWith('正常') ? 'ok' : (s.startsWith('緊急') ? 'bad' : (s.startsWith('要確認') ? 'warn' : ''));
+const text = (el, v) => { el.textContent = v; };
+const one = (id, field) => { const d = dash.data(id); if (d.status !== 'ok' || !Array.isArray(d.data) || !d.data.length) return null; return d.data[0][field]; };
+const num = (id) => { const d = dash.data(id); return d.status === 'ok' && d.data != null ? String(d.data) : '—'; };
+
+for (const name of ['runState', 'runCard']) dash.draw(name, (el) => { const v = one('run_state', '状態'); text(el, v ?? '—'); el.className = v ? stateClass(v) : ''; });
+dash.draw('runAt', (el) => text(el, one('run_state', '最終実行') ?? '—'));
+dash.draw('runResult', (el) => text(el, one('run_state', '結果') ?? '—'));
+dash.draw('pendingLead', (el) => text(el, num('approvals_pending')));
+dash.draw('pending', (el) => text(el, num('approvals_pending')));
+dash.draw('overdue', (el) => { const v = num('approvals_overdue'); text(el, v); el.className = v !== '—' && +v > 0 ? 'bad' : ''; });
+dash.draw('unsubPending', (el) => { const v = num('unsub_pending'); text(el, v); el.className = v !== '—' && +v > 0 ? 'bad' : ''; });
+dash.draw('buyers', (el) => text(el, num('buyers_n')));
+dash.draw('buyersA', (el) => text(el, num('buyers_a')));
+dash.draw('sent', (el) => text(el, num('sent_n')));
+dash.draw('replies', (el) => text(el, num('replies_n')));
+dash.draw('deals', (el) => text(el, num('deals_n')));
+
+const rowsInto = (tbody, rows, cols, key) => {
+  tbody.replaceChildren(...rows.map(r => { const tr = document.createElement('tr'); if (key) tr.dataset.key = r[key]; for (const c of cols) { const td = document.createElement('td'); td.textContent = r[c] ?? ''; tr.appendChild(td); } return tr; }));
+};
+dash.draw('approvalRows', (tb) => { const d = dash.data('approvals_open'); rowsInto(tb, d.status === 'ok' ? d.data : [], ['approval_id', '依頼日時', 'ゲート(#番号)', 'L2', '対象', 'リスク', '期限'], 'approval_id'); });
+dash.draw('logRows', (tb) => {
+  const d = dash.data('log'); const p = (s) => { const m = String(s || '').match(/(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{1,2}):(\d{2}))?/); return m ? Date.UTC(+m[1], +m[2] - 1, +m[3], +(m[4] || 0) - 9, +(m[5] || 0)) : 0; };
+  const rows = d.status === 'ok' ? [...d.data].sort((a, b) => p(b['日時(JST)']) - p(a['日時(JST)'])).slice(0, 10) : [];
+  rowsInto(tb, rows, ['日時(JST)', '実行者', '内容', '結果']);
+});
+dash.draw('buyerRows', (tb) => { const d = dash.data('buyers_matrix'); rowsInto(tb, d.status === 'ok' ? d.data : [], ['状態', 'A', 'B', 'その他', '計'], '状態'); });
+dash.draw('unsubRows', (tb) => { const d = dash.data('unsub_open'); rowsInto(tb, d.status === 'ok' ? d.data : [], ['メールアドレス(送信前に完全一致で照合)', '受け付けた日時', '範囲(本人のみ/会社全体=ドメイン)', '経路(返信/フォーム/手動)']); });
+dash.onData(() => {
+  for (const [id, src] of [['approval-empty', 'approvals_open'], ['unsub-empty', 'unsub_open']]) {
+    const d = dash.data(src);
+    for (const el of document.querySelectorAll('#' + id)) el.hidden = !(d.status === 'ok' && Array.isArray(d.data) && d.data.length === 0);
+  }
+});
+
+const DEPT_ORDER = ['D01','D02','D03','D04','D05','D06','D08','D10','D11','D12','D13','D14','D16'];
+dash.onData(() => {
+  for (const b of document.querySelectorAll('.tab')) {
+    if (b.dataset.bound) continue; b.dataset.bound = '1';
+    b.addEventListener('click', () => {
+      for (const x of document.querySelectorAll('.tab')) x.setAttribute('aria-selected', x === b ? 'true' : 'false');
+      for (const v of document.querySelectorAll('.view')) v.hidden = v.id !== b.dataset.view;
+    });
+  }
+});
+const rows = (id) => { const d = dash.data(id); return d.status === 'ok' && Array.isArray(d.data) ? d.data : []; };
+const mk = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+dash.draw('orgTop', (el) => {
+  const ag = rows('agents');
+  el.replaceChildren(...ag.filter(a => a['層'] === '統括' || a['層'] === '共通').map(a => { const n = mk('div', 'node'); n.append(mk('b', '', a.agent), mk('small', '', a['層'] + ':' + a['説明'].slice(0, 70))); return n; }));
+  if (!ag.length) el.textContent = '—';
+});
+dash.draw('orgGrid', (el) => {
+  const ag = rows('agents'), sk = rows('skills');
+  el.replaceChildren(...DEPT_ORDER.map(d => {
+    const head = ag.find(a => a['部門'] === d && a['層'] === '部門長') || ag.find(a => a['部門'] === d);
+    const subs = ag.filter(a => a['部門'] === d && a['層'] === '課(D06)');
+    const n = mk('div', 'node');
+    n.append(mk('b', '', d + ' ' + (head ? head['部門名'] : '')));
+    n.append(mk('small', '', (head ? head.agent : '') + ' / スキル ' + sk.filter(s => s['部門'] === d).length + '本'));
+    if (subs.length) { const ul = mk('ul'); subs.forEach(s => ul.append(mk('li', '', s.agent))); n.append(ul); }
+    return n;
+  }));
+});
+dash.draw('deptSelect', (sel) => {
+  const ag = rows('agents');
+  const opts = DEPT_ORDER.map(d => { const h = ag.find(a => a['部門'] === d); return new Option(d + ' ' + (h ? h['部門名'] : ''), d); });
+  sel.replaceChildren(...opts);
+  sel.value = dash.params().dept || 'D06';
+  sel.onchange = () => dash.setParams({dept: sel.value});
+});
+dash.draw('deptCharter', (dl) => {
+  const d = dash.params().dept || 'D06';
+  const h = rows('agents').find(a => a['部門'] === d && a['層'] === '部門長');
+  const items = h ? ['目的','起動','受け渡し','承認ゲート','KPI','制約'].map(k => [k, h[k]]).filter(([, v]) => v) : [];
+  if (h && !items.length) items.push(['説明', h['説明']]);
+  dl.replaceChildren(...items.flatMap(([k, v]) => [mk('dt', '', k), mk('dd', '', v)]));
+  if (!items.length) dl.textContent = '—';
+});
+dash.draw('deptSkills', (tb) => {
+  const d = dash.params().dept || 'D06';
+  rowsInto(tb, rows('skills').filter(s => s['部門'] === d), ['skill', '業務', 'フェーズ', '自律度', '説明'], 'skill');
+});
+dash.draw('settingRows', (tb) => rowsInto(tb, rows('settings'), ['ファイル', '項目', '値']));
+dash.draw('testRows', (tb) => rowsInto(tb, rows('tests'), ['グループ', '問題数', '正解'], 'グループ'));
+</script>

@@ -1,0 +1,57 @@
+<meta name="dash-one-writer">
+<style>
+.cr{font-family:var(--font-anthropic-sans);color:var(--color-fg);display:flex;flex-direction:column;gap:var(--cds-gap-xl)}
+.cr h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);margin:0}
+.cr h2{font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);margin:0 0 var(--cds-gap-sm)}
+.cr .lead{color:var(--color-fg-muted);margin:var(--cds-gap-xs) 0 0}
+.cr .bars{display:flex;flex-direction:column;gap:var(--cds-gap-sm);min-height:180px}
+.cr .bar-row{display:grid;grid-template-columns:minmax(120px,40%) 1fr max-content;align-items:center;gap:var(--cds-gap-sm)}
+.cr .bar-track{background:var(--cds-chart-grid);border-radius:var(--cds-radius);height:14px;overflow:hidden}
+.cr .bar-fill{height:100%}
+.cr .bar-num{font-variant-numeric:tabular-nums;min-width:3em;text-align:right}
+.cr .wrap{overflow-x:auto}
+.cr table{border-collapse:collapse;width:100%}
+.cr th,.cr td{text-align:left;padding:var(--cds-pad-xs) var(--cds-pad-sm);border-bottom:1px solid var(--color-border-line);vertical-align:top}
+.cr th{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);font-weight:var(--cds-font-weight-medium)}
+.cr .note{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+</style>
+<div class="cr" lang="ja">
+  <header id="top">
+    <h1>荻野商店さま 海外営業 月次レポート</h1>
+    <p class="lead">2026年11月(準備期間)。候補を <b data-draw="cand" data-source="funnel" data-field="社数" data-where="段階=候補を調べた会社">—</b> 社調べ、12/1からシンガポール向けの送信を始める予定です。</p>
+  </header>
+  <section id="funnel">
+    <h2>営業の進み具合(社数)</h2>
+    <div class="bars" data-draw="funnelBars" data-source="funnel" role="img" aria-label="段階ごとの社数"></div>
+  </section>
+  <section id="segments">
+    <h2>狙う業態ごとの候補</h2>
+    <div class="wrap"><table data-source="segments" data-row-key="業態"><thead><tr><th data-field="業態">業態</th><th data-field="社数">社数</th><th data-field="Aランク">Aランク(有望)</th></tr></thead><tbody data-draw="segRows"></tbody></table></div>
+  </section>
+  <section id="plan">
+    <h2>計画と今月の状況</h2>
+    <div class="wrap"><table data-source="plan" data-row-key="項目"><thead><tr><th data-field="項目">項目</th><th data-field="内容">内容</th></tr></thead><tbody data-draw="planRows"></tbody></table></div>
+  </section>
+  <p class="note">買い手の社名は、紹介登録(事前通知)の時点でお知らせします。担当者個人の連絡先はこのレポートに載せません。数字は月末に共通台帳から集計し、毎月5日までに更新します。</p>
+</div>
+<script>
+const rowsOf = (id) => { const d = dash.data(id); return d.status === 'ok' && Array.isArray(d.data) ? d.data : null; };
+const cells = (tb, rows, cols, key) => tb.replaceChildren(...(rows || []).map(r => { const tr = document.createElement('tr'); if (key) tr.dataset.key = r[key]; cols.forEach(c => { const td = document.createElement('td'); td.textContent = r[c] ?? ''; tr.appendChild(td); }); return tr; }));
+dash.draw('cand', (el) => { const r = rowsOf('funnel'); const f = r && r.find(x => x['段階'] === '候補を調べた会社'); el.textContent = f ? String(f['社数']) : '—'; });
+dash.draw('funnelBars', (el) => {
+  const r = rowsOf('funnel');
+  if (!r) { el.textContent = '—'; return; }
+  const max = Math.max(1, ...r.map(x => +x['社数'] || 0));
+  el.replaceChildren(...r.map(x => {
+    const row = document.createElement('div'); row.className = 'bar-row';
+    const lab = document.createElement('div'); lab.textContent = x['段階'];
+    const tr = document.createElement('div'); tr.className = 'bar-track';
+    const fi = document.createElement('div'); fi.className = 'bar-fill'; fi.style.width = ((+x['社数'] || 0) / max * 100) + '%'; fi.style.background = dash.colors[0];
+    tr.appendChild(fi);
+    const n = document.createElement('div'); n.className = 'bar-num'; n.textContent = String(x['社数']);
+    row.append(lab, tr, n); return row;
+  }));
+});
+dash.draw('segRows', (tb) => cells(tb, rowsOf('segments'), ['業態', '社数', 'Aランク'], '業態'));
+dash.draw('planRows', (tb) => cells(tb, rowsOf('plan'), ['項目', '内容'], '項目'));
+</script>
