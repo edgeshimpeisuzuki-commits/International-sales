@@ -1,0 +1,136 @@
+[
+ {
+  "op": "set",
+  "path": "dash/meta",
+  "data": {
+   "title": "海外営業 運営画面(P1)",
+   "lang": "ja"
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/log",
+  "data": {
+   "title": "定時処理ログ",
+   "description": "毎朝の本処理と見張りの実行記録",
+   "source": {
+    "kind": "call",
+    "connector": "Google Sheets",
+    "tool": "get_values",
+    "args": {
+     "spreadsheetId": "{{LEDGER_SHEET_ID}}",
+     "range": "'定時処理ログ'!A1:D2000"
+    }
+   },
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-16T09:40:55Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/approvals",
+  "data": {
+   "title": "承認待ち",
+   "description": "人の判断を待つ依頼の一覧",
+   "source": {
+    "kind": "call",
+    "connector": "Google Sheets",
+    "tool": "get_values",
+    "args": {
+     "spreadsheetId": "{{LEDGER_SHEET_ID}}",
+     "range": "'承認待ち(ApprovalRequest)'!A1:N2000"
+    }
+   },
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-16T09:40:55Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/buyers",
+  "data": {
+   "title": "買い手候補",
+   "description": "見込み客の会社(Party)",
+   "source": {
+    "kind": "call",
+    "connector": "Google Sheets",
+    "tool": "get_values",
+    "args": {
+     "spreadsheetId": "{{LEDGER_SHEET_ID}}",
+     "range": "'買い手(Party)'!A1:O3000"
+    }
+   },
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-16T09:40:55Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/unsub",
+  "data": {
+   "title": "配信停止",
+   "description": "配信停止の受付と反映の記録",
+   "source": {
+    "kind": "call",
+    "connector": "Google Sheets",
+    "tool": "get_values",
+    "args": {
+     "spreadsheetId": "{{LEDGER_SHEET_ID}}",
+     "range": "'配信停止'!A1:E5000"
+    }
+   },
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-16T09:40:55Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/activity",
+  "data": {
+   "title": "活動記録",
+   "description": "送信・返信などの記録",
+   "source": {
+    "kind": "call",
+    "connector": "Google Sheets",
+    "tool": "get_values",
+    "args": {
+     "spreadsheetId": "{{LEDGER_SHEET_ID}}",
+     "range": "'活動記録(Activity)'!A1:P20000"
+    }
+   },
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-16T09:40:55Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/deals",
+  "data": {
+   "title": "案件",
+   "description": "商談化した案件(Deal)",
+   "source": {
+    "kind": "call",
+    "connector": "Google Sheets",
+    "tool": "get_values",
+    "args": {
+     "spreadsheetId": "{{LEDGER_SHEET_ID}}",
+     "range": "'案件(Deal)'!A1:N2000"
+    }
+   },
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-16T09:40:55Z"
+   }
+  }
+ }
+]

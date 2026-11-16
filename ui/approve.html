@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>海外営業 承認画面</title>
+<style>
+  :root{--fg:#1f1e1c;--muted:#6b6862;--line:#e3e0da;--panel:#faf9f6;--bg:#fff;--ok:#2f7d4f;--bad:#b3412f;--warn:#9a6b12;--accent:#2b5c9e}
+  @media (prefers-color-scheme: dark){:root{--fg:#ecebe8;--muted:#a19e98;--line:#3a3935;--panel:#24231f;--bg:#1a1917;--ok:#6cc08f;--bad:#e2806f;--warn:#d6a84a;--accent:#7fa8e0}}
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.6 system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;color:var(--fg);background:var(--bg)}
+  main{max-width:960px;margin:0 auto;padding:20px 16px 48px}
+  h1{font-size:22px;margin:0 0 4px;font-weight:600}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 16px}
+  .bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 16px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+  .bar label{font-size:13px;color:var(--muted)}
+  select,textarea,button{font:inherit;color:inherit}
+  select{padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+  button{padding:6px 14px;border-radius:8px;border:1px solid var(--line);background:var(--bg);cursor:pointer}
+  button:disabled{opacity:.5;cursor:default}
+  button.approve{border-color:var(--ok);color:var(--ok)}
+  button.reject{border-color:var(--bad);color:var(--bad)}
+  .card{border:1px solid var(--line);border-radius:10px;padding:14px;margin:0 0 12px;background:var(--panel)}
+  .card h2{font-size:16px;margin:0 0 6px;font-weight:600}
+  .meta{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;color:var(--muted);margin:0 0 8px}
+  .meta b{color:var(--fg);font-weight:500}
+  .body{white-space:pre-wrap;word-break:break-word;margin:0 0 10px}
+  .body a{color:var(--accent)}
+  textarea{width:100%;min-height:52px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);margin:0 0 8px}
+  .actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .status{font-size:13px}
+  .status.ok{color:var(--ok)} .status.bad{color:var(--bad)} .status.warn{color:var(--warn)}
+  .msg{padding:12px;border:1px solid var(--line);border-radius:10px;margin:0 0 12px}
+  .msg.bad{border-color:var(--bad);color:var(--bad)}
+  .empty{color:var(--muted);padding:24px 0;text-align:center}
+  .pill{display:inline-block;font-size:12px;padding:1px 8px;border-radius:999px;border:1px solid var(--warn);color:var(--warn)}
+  details{margin-top:24px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<main>
+  <h1>海外営業 承認画面</h1>
+  <p class="sub">共通台帳の「承認待ち(ApprovalRequest)」を表示し、承認・却下を台帳に書き込みます。承認・却下とも1名で確定します(11/16決定)。送信はこの画面からは行いません。</p>
+
+  <div class="bar">
+    <label for="who">あなた</label>
+    <select id="who"><option value="">選んでください</option><option>鈴木</option><option>渡辺</option></select>
+    <button id="reload" type="button">再読み込み</button>
+    <span id="fresh" class="status"></span>
+  </div>
+
+  <div id="pageMsg"></div>
+  <div id="list"><div class="empty">読み込み中…</div></div>
+
+  <details>
+    <summary>書き込む内容</summary>
+    <p>承認:判断に「承認」、決裁者1にあなたの名前、判断日時を書きます(1名で確定)。<br>却下:判断に「却下」、決裁者1にあなたの名前、判断日時、理由を書きます。<br>書き込む直前に台帳を読み直し、対象の行が変わっていれば書き込まずに知らせます。</p>
+  </details>
+</main>
+
+<script>
+const SHEET = '{{LEDGER_SHEET_ID}}';
+const TAB = "'承認待ち(ApprovalRequest)'";
+const RANGE = TAB + '!A1:N2000';
+const SERVER = 'Google Sheets';
+const COL = {id:0, at:1, gate:2, l2:3, target:4, content:5, risk:6, from:7, due:8, decision:9, ap1:10, ap2:11, decidedAt:12, reason:13};
+let mcp = null, rows = [], unwatch = null, busy = false;
+
+const $ = (id) => document.getElementById(id);
+const whoSel = $('who');
+try { const w = localStorage.getItem('ops-approver'); if (w) whoSel.value = w; } catch (e) {}
+whoSel.addEventListener('change', () => { try { localStorage.setItem('ops-approver', whoSel.value); } catch (e) {} render(); });
+
+function valuesOf(payload) {
+  const p = payload && payload.values ? payload : (payload && payload.content && payload.content.values ? payload.content : payload);
+  return (p && Array.isArray(p.values)) ? p.values : [];
+}
+function jstNow() {
+  const d = new Date(Date.now() + 9 * 3600e3);
+  return d.toISOString().slice(0, 16).replace('T', ' ');
+}
+function errText(e) {
+  switch (e && e.code) {
+    case 'needs_reauth': return 'Google Sheets の接続が切れています。claude.ai の設定 → コネクタで再接続してください。';
+    case 'server_not_connected': return 'Google Sheets のコネクタがありません。claude.ai の設定 → コネクタで追加してください。';
+    case 'selection_required': return 'Google Sheets の接続が複数あります。どれを使うか選んでください。';
+    case 'not_in_manifest': case 'approval_required': return 'この画面で Google Sheets を使う許可が必要です。許可してから再読み込みしてください。';
+    case 'blocked_by_policy': return '組織の設定で、この操作が許可されていません。';
+    case 'server_unavailable': case 'upstream_error': return 'Google Sheets に一時的につながりません。少し待って再読み込みしてください。';
+    case 'tool_error': return '台帳がエラーを返しました: ' + (e.message || '');
+    default: return '読み込めませんでした(' + ((e && e.code) || '不明') + ')。';
+  }
+}
+function showPageMsg(text, cls) {
+  const box = $('pageMsg'); box.replaceChildren();
+  if (!text) return;
+  const d = document.createElement('div'); d.className = 'msg ' + (cls || ''); d.textContent = text; box.appendChild(d);
+}
+
+function el(tag, attrs, ...kids) {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) { if (k === 'class') n.className = v; else if (k.startsWith('on')) n.addEventListener(k.slice(2), v); else n.setAttribute(k, v); }
+  for (const k of kids) n.append(k instanceof Node ? k : document.createTextNode(k == null ? '' : String(k)));
+  return n;
+}
+function linkify(text) {
+  const frag = document.createDocumentFragment();
+  const parts = String(text || '').split(/(https:\/\/[^\s]+)/g);
+  for (const p of parts) {
+    if (/^https:\/\//.test(p)) { const a = el('a', {href: p, target: '_blank', rel: 'noopener'}, p); frag.append(a); }
+    else frag.append(document.createTextNode(p));
+  }
+  return frag;
+}
+
+function render() {
+  const list = $('list');
+  const open = rows.filter(r => r.v[COL.id] && !String(r.v[COL.decision] || '').trim());
+  if (!open.length) { list.replaceChildren(el('div', {class: 'empty'}, '承認待ちはありません。')); return; }
+  const me = whoSel.value;
+  list.replaceChildren(...open.map(r => {
+    const v = r.v; const ap1 = String(v[COL.ap1] || '').trim();
+    const status = el('span', {class: 'status'});
+    const reason = el('textarea', {placeholder: '理由・修正内容(却下のときは必須)'});
+    const approve = el('button', {class: 'approve', type: 'button'}, '承認');
+    const reject = el('button', {class: 'reject', type: 'button'}, '却下');
+    if (!me) approve.disabled = true;
+    if (!me) reject.disabled = true;
+    if (!me) status.textContent = '上の「あなた」を選ぶと操作できます。';
+    approve.addEventListener('click', () => act(v[COL.id], 'approve', reason, status, [approve, reject]));
+    reject.addEventListener('click', () => act(v[COL.id], 'reject', reason, status, [approve, reject]));
+    return el('div', {class: 'card', id: 'ap-' + v[COL.id]},
+      el('h2', {}, String(v[COL.target] || '(対象なし)')),
+      el('div', {class: 'meta'},
+        el('span', {}, 'ID ', el('b', {}, v[COL.id])),
+        el('span', {}, 'ゲート ', el('b', {}, v[COL.gate] || '—')),
+        el('span', {}, 'L2 ', el('b', {}, v[COL.l2] || '—')),
+        el('span', {}, 'リスク ', el('b', {}, v[COL.risk] || '—')),
+        el('span', {}, '依頼 ', el('b', {}, v[COL.at] || '—')),
+        el('span', {}, '期限 ', el('b', {}, v[COL.due] || '—')),
+        ''),
+      el('div', {class: 'body'}, linkify(v[COL.content])),
+      reason,
+      el('div', {class: 'actions'}, approve, reject, status));
+  }));
+}
+
+async function act(id, kind, reasonEl, statusEl, buttons) {
+  if (busy) return;
+  const me = whoSel.value; if (!me) return;
+  const reason = reasonEl.value.trim();
+  if (kind === 'reject' && !reason) { statusEl.className = 'status warn'; statusEl.textContent = '却下の理由を書いてください。'; return; }
+  busy = true; buttons.forEach(b => b.disabled = true);
+  statusEl.className = 'status'; statusEl.textContent = '台帳を確認しています…';
+  try {
+    const fresh = await mcp.callTool(SERVER, 'get_values', {spreadsheetId: SHEET, range: RANGE}, {cache: false});
+    const vals = valuesOf(fresh.payload);
+    const idx = vals.findIndex((r, i) => i > 0 && r[COL.id] === id);
+    if (idx < 0) throw {code: 'gone'};
+    const cur = vals[idx];
+    if (String(cur[COL.decision] || '').trim()) throw {code: 'decided', by: cur[COL.decision]};
+    const ap1 = String(cur[COL.ap1] || '').trim();
+    const rowNo = idx + 1;
+    let range, values, done;
+    range = TAB + '!J' + rowNo + ':N' + rowNo;
+    if (kind === 'approve') { values = [['承認', me, '', jstNow(), reason || String(cur[COL.reason] || '')]]; done = '承認しました。'; }
+    else { values = [['却下', me, '', jstNow(), reason]]; done = '却下しました。'; }
+    statusEl.textContent = '書き込んでいます…';
+    await mcp.callTool(SERVER, 'update_values', {spreadsheetId: SHEET, range, values});
+    statusEl.className = 'status ok'; statusEl.textContent = done;
+    try { await mcp.invalidate(SERVER, 'get_values'); } catch (e) {}
+    setTimeout(load, 800);
+  } catch (e) {
+    statusEl.className = 'status bad';
+    if (e && e.code === 'gone') statusEl.textContent = 'この依頼が台帳に見つかりません。再読み込みしてください。';
+    else if (e && e.code === 'decided') statusEl.textContent = 'すでに判断済みです(' + e.by + ')。再読み込みしてください。';
+    else if (e && (e.code === 'server_unavailable' || e.code === 'upstream_error')) statusEl.textContent = '書き込めたか分かりません。再読み込みして台帳を確認してから、必要ならもう一度押してください。';
+    else statusEl.textContent = errText(e);
+    buttons.forEach(b => b.disabled = false);
+  } finally { busy = false; }
+}
+
+function load() {
+  if (!mcp) return;
+  if (unwatch) { unwatch(); unwatch = null; }
+  unwatch = mcp.watchTool(SERVER, 'get_values', {spreadsheetId: SHEET, range: RANGE}, (ev) => {
+    if (ev.type === 'data') {
+      const vals = valuesOf(ev.result.payload);
+      rows = vals.slice(1).map((v, i) => ({v, row: i + 2}));
+      showPageMsg('');
+      const at = ev.result.cache ? new Date(ev.result.cache.storedAt) : new Date();
+      $('fresh').textContent = '更新 ' + at.toLocaleTimeString('ja-JP', {hour: '2-digit', minute: '2-digit'});
+      render();
+    } else {
+      const c = ev.error && ev.error.code;
+      if (['needs_reauth', 'server_not_connected', 'blocked_by_policy', 'not_in_manifest', 'approval_required', 'selection_required'].includes(c)) { rows = []; $('list').replaceChildren(); }
+      showPageMsg(errText(ev.error), 'bad');
+      if (c === 'approval_required' || c === 'not_in_manifest') {
+        const b = el('button', {type: 'button'}, 'Google Sheets の使用を許可して読み込む');
+        b.addEventListener('click', async () => { try { await mcp.callTool(SERVER, 'get_values', {spreadsheetId: SHEET, range: RANGE}); load(); } catch (e) { showPageMsg(errText(e), 'bad'); } });
+        $('pageMsg').appendChild(b);
+      }
+    }
+  }, {refetchInterval: 60000});
+}
+
+$('reload').addEventListener('click', async () => { if (!mcp) return; try { await mcp.invalidate(SERVER, 'get_values'); } catch (e) {} load(); });
+
+(async () => {
+  mcp = await (window.claude ? window.claude.use('mcp') : Promise.resolve(null));
+  if (!mcp) { $('list').replaceChildren(el('div', {class: 'empty'}, 'この表示では台帳に接続できません。claude.ai でこの画面を開いてください。')); return; }
+  load();
+})();
+</script>
+</body>
+</html>
