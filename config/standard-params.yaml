@@ -32,3 +32,6 @@ watchdog:           # 定義書19.6
   alert_hours_without_completion: 12
   manual_takeover_hours: 24
 approval_backlog_alert: 20     # 24時間超の承認待ちがこの件数を超えたら新規の下書きを減らす
+
+service_delivery:      # D16-04
+  acceptance_reply_days: 10       # 納品から検収の回答までの期限(スキルの記載に合わせた。11/16)
