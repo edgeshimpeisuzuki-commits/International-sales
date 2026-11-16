@@ -5,8 +5,8 @@ client: ogino
 countries: [SG]
 variable: approach       # 変えるのは初回の進め方だけ。フォロー2通は両案共通
 variants:
-  A: {template_id: OGN-INTRO-01, version: "0.1", approach: "会社と商品を紹介してから、数量と希望価格を聞く(約90語)"}
-  B: {template_id: OGN-INTRO-02, version: "0.1", approach: "質問1つから入り、数量と希望価格だけを聞く(約80語)"}
+  A: {template_id: OGN-INTRO-01, version: "0.2", approach: "会社と商品を紹介してから、数量と希望価格を聞く(82〜91語)"}
+  B: {template_id: OGN-INTRO-02, version: "0.2", approach: "質問1つから入り、数量と希望価格だけを聞く(76〜85語)"}
 follow_ups: [{template_id: OGN-FU1-01, day: 4}, {template_id: OGN-FU2-01, day: 10}]
 assignment: {unit: company, stratify_by: [country, rank, icp], keep_through_follow_ups: true}
 primary_metric: positive_reply_rate   # 関心あり+資料・サンプル・価格の要求
