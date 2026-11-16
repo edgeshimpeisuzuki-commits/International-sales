@@ -36,9 +36,9 @@ def front(text):
 
 def source_label():
     try:
-        sha = subprocess.check_output(["git", "-C", ROOT, "rev-parse", "--short", "HEAD"], text=True).strip()
+        # コミットのIDは入れない(取り込むたびに写しが変わってしまうため)。最終更新日だけ
         day = subprocess.check_output(["git", "-C", ROOT, "log", "-1", "--format=%cs"], text=True).strip()
-        return f"GitHub edgeshimpeisuzuki-commits/International-sales (main {sha}, {day})"
+        return f"GitHub edgeshimpeisuzuki-commits/International-sales (main, {day})"
     except Exception:
         return "GitHub edgeshimpeisuzuki-commits/International-sales"
 
