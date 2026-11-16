@@ -35,10 +35,22 @@
   .empty{color:var(--muted);padding:24px 0;text-align:center}
   .pill{display:inline-block;font-size:12px;padding:1px 8px;border-radius:999px;border:1px solid var(--warn);color:var(--warn)}
   details{margin-top:24px;color:var(--muted);font-size:13px}
+  .sitenav{display:flex;flex-wrap:wrap;gap:4px 16px;padding:0 0 10px;margin:0 0 16px;border-bottom:1px solid var(--line);font-size:14px}
+  .sitenav a{color:var(--muted);text-decoration:none}
+  .sitenav a:hover{color:var(--fg)}
+  .sitenav .here{color:var(--fg);font-weight:600}
 </style>
 </head>
 <body>
 <main>
+  <nav class="sitenav" aria-label="画面">
+    <a href="https://claude.ai/artifact/V5T7F6ocfLQsmyxb3kSqrS#ops">運営</a>
+    <a href="https://claude.ai/artifact/V5T7F6ocfLQsmyxb3kSqrS#org">組織図</a>
+    <a href="https://claude.ai/artifact/V5T7F6ocfLQsmyxb3kSqrS#dept">部門の詳細</a>
+    <a href="https://claude.ai/artifact/V5T7F6ocfLQsmyxb3kSqrS#config">設定・テスト</a>
+    <span class="here" aria-current="page">承認</span>
+    <a href="https://claude.ai/artifact/TSDdqVd6HPJn3cWpNT6sP3">月次レポート(荻野商店さま)</a>
+  </nav>
   <h1>海外営業 承認画面</h1>
   <p class="sub">共通台帳の「承認待ち(ApprovalRequest)」を表示し、承認・却下を台帳に書き込みます。承認・却下とも1名で確定します(11/16決定)。送信はこの画面からは行いません。</p>
 
