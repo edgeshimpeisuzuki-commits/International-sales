@@ -1,0 +1,19 @@
+# SG第1波の最初のABテスト(案)。D05-02/D14-05。変更はPRで2名が確認。
+experiment_id: EXP-20261201-approach
+status: draft            # draft / approved / running / decided / stopped
+client: ogino
+countries: [SG]
+variable: approach       # 変えるのは初回の進め方だけ。フォロー2通は両案共通
+variants:
+  A: {template_id: OGN-INTRO-01, version: "0.2", approach: "会社と商品を紹介してから、数量と希望価格を聞く(82〜91語)"}
+  B: {template_id: OGN-INTRO-02, version: "0.2", approach: "質問1つから入り、数量と希望価格だけを聞く(76〜85語)"}
+follow_ups: [{template_id: OGN-FU1-01, day: 4}, {template_id: OGN-FU2-01, day: 10}]
+assignment: {unit: company, stratify_by: [country, rank, icp], keep_through_follow_ups: true}
+primary_metric: positive_reply_rate   # 関心あり+資料・サンプル・価格の要求
+secondary_metrics: [reply_rate, meeting_rate]
+guardrails: {complaints_stop: 1, unsubscribe_rate_stop: 0.02}
+decision:
+  method: simple
+  min_delivered_per_arm: 250
+  switch_if_ratio_at_least: 2.0
+# 次の候補(このテストの勝ち案に対して1つずつ): 件名 / サンプルを先に申し出る(サンプル上限額の決定後) / 先頭に出す商品(ほうじ茶パウダー or フレーバーティー)
