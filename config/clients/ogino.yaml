@@ -11,3 +11,8 @@ daily_send_cap:
   warmup_weeks: [2, 4]
 target_countries: [SG, HK, MY, US]
 price_list: "11/01版"
+status: active           # active / paused / ended
+ledger_env: LEDGER_SHEET_ID   # 共通台帳(全クライアント共通。client_id: ogino)
+icp_wave1: [importer_wholesaler, self_importing_food_beverage_maker]   # 11/15決定・荻野商店了承済み
+pilot_country: SG
+samples: {product_cost: client, shipping: per_case_approval}            # 11/15決定(上限額は未決)

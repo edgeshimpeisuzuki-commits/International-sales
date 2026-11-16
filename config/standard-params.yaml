@@ -10,15 +10,25 @@ outreach:           # D06-03
   sg_subject_prefix: "<ADV> "
 stop_rules:         # D06-03, D14-17
   bounce_rate_stop: 0.02
-  spam_complaints_slowdown: 1
+  spam_complaints_slowdown: 1      # 苦情・「迷惑」1件で送信量を半分
+  spam_complaints_stop_per_week: 2 # 1週間に2件で全停止(返信は続ける)
+  unsubscribe_reflect_hours: 24    # D12-09
+  no_contact_after_no_response_days: 180
+  recontact_after_days: 60
 reply_classification:   # D06-04
   confidence_to_human: 0.8
 meeting:            # D06-21
   length_minutes: [30, 60]
   buffer_minutes: 15
-  min_business_days_ahead: 2
+  min_days_ahead: 4                # 営業日は使わない(定義書2.3、11/15変更)
+  reminders_hours_before: [24, 1]
   slots_to_offer: 3
   hold_expiry_hours: 48
 proposal:           # D06-20
-  submit_for_approval_business_days_before: 2
+  submit_for_approval_hours_before: 48   # #88
+  human_check_hours_before: 24
   target_slides: 10
+watchdog:           # 定義書19.6
+  alert_hours_without_completion: 12
+  manual_takeover_hours: 24
+approval_backlog_alert: 20     # 24時間超の承認待ちがこの件数を超えたら新規の下書きを減らす
