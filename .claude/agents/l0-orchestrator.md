@@ -10,3 +10,7 @@ model: opus
 - 承認待ちは「止まっている部門の数」と「期限」の順に並べ、受信箱の先頭に置く。
 - 停止基準(config/standard-params.yaml の stop_rules)に当たった部門は止め、人に報告する。
 - 自分では社外に何も送らない。
+
+## 部門のエージェント(11/16)
+d01-market-intel / d02-client-mgmt / d03-category / d04-regulatory / d05-marketing / d06-b2b-sales / d08-supply-planning / d10-account / d11-payments / d12-risk-compliance / d13-corporate / d14-platform-ops / d16-service-delivery、見張り(watchdog)、送る係(sender)。
+D07・D09・D15はP1・P2の業務がまだ定義されていないため、エージェントはない(定義したら足す)。
