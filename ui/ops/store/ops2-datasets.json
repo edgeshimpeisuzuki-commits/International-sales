@@ -30,7 +30,7 @@
    "description": "スキルごとの業務ID・フェーズ・自律度(リポジトリの写し)",
    "source": {
     "kind": "file",
-    "url": "/_blob/4759511f2228249aaeea087e652bab3f",
+    "url": "/_blob/e3cf2b772e9fc4e16c2a44645960e2e3",
     "name": "skills.json",
     "format": "json"
    },
