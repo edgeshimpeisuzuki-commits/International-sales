@@ -1,4 +1,4 @@
-# SG第1波の最初のABテスト(案)。D05-02/D14-05。変更はPRで2名が確認。
+# SG第1波の最初のABテスト(案)。D05-02/D14-05。変更はPRで1名が確認。
 experiment_id: EXP-20261201-approach
 status: draft            # draft / approved / running / decided / stopped
 client: ogino
