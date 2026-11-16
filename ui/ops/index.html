@@ -19,6 +19,8 @@
 .ops .tabs{display:flex;flex-wrap:wrap;gap:var(--cds-gap-xs);border-bottom:1px solid var(--color-border-line)}
 .ops .tab{font:inherit;color:var(--color-fg-muted);background:none;border:0;border-bottom:2px solid transparent;padding:var(--cds-pad-xs) var(--cds-pad-sm);cursor:pointer}
 .ops .tab[aria-selected="true"]{color:var(--color-fg);border-bottom-color:var(--color-fg)}
+.ops .tab-link{text-decoration:none;margin-left:auto}
+.ops .tab-link + .tab-link{margin-left:0}
 .ops .view{display:flex;flex-direction:column;gap:var(--cds-gap-xl)}
 .ops .org{display:flex;flex-direction:column;gap:var(--cds-gap-md)}
 .ops .org-top{display:flex;gap:var(--cds-gap-md);flex-wrap:wrap}
@@ -42,6 +44,8 @@
     <button class="tab" role="tab" data-view="view-org" aria-selected="false">組織図</button>
     <button class="tab" role="tab" data-view="view-dept" aria-selected="false">部門の詳細</button>
     <button class="tab" role="tab" data-view="view-settings" aria-selected="false">設定・テスト</button>
+    <a class="tab tab-link" href="https://claude.ai/artifact/GXTwknjGpMN4otWetBHaks">承認画面 ↗</a>
+    <a class="tab tab-link" href="https://claude.ai/artifact/TSDdqVd6HPJn3cWpNT6sP3">月次レポート(荻野商店さま) ↗</a>
   </nav>
   <div class="view" id="view-ops">
 
@@ -243,15 +247,21 @@ dash.onData(() => {
 });
 
 const DEPT_ORDER = ['D01','D02','D03','D04','D05','D06','D08','D10','D11','D12','D13','D14','D16'];
-dash.onData(() => {
-  for (const b of document.querySelectorAll('.tab')) {
-    if (b.dataset.bound) continue; b.dataset.bound = '1';
-    b.addEventListener('click', () => {
-      for (const x of document.querySelectorAll('.tab')) x.setAttribute('aria-selected', x === b ? 'true' : 'false');
-      for (const v of document.querySelectorAll('.view')) v.hidden = v.id !== b.dataset.view;
-    });
-  }
-});
+const VIEW_BY_HASH = {'ops': 'view-ops', 'org': 'view-org', 'dept': 'view-dept', 'config': 'view-settings'};
+const showView = (view) => {
+  for (const x of document.querySelectorAll('.tab[data-view]')) x.setAttribute('aria-selected', x.dataset.view === view ? 'true' : 'false');
+  for (const v of document.querySelectorAll('.view')) v.hidden = v.id !== view;
+};
+for (const b of document.querySelectorAll('.tab[data-view]')) {
+  b.addEventListener('click', () => {
+    showView(b.dataset.view);
+    const h = Object.keys(VIEW_BY_HASH).find(k => VIEW_BY_HASH[k] === b.dataset.view);
+    try { history.replaceState(null, '', '#' + h); } catch (e) {}
+  });
+}
+const fromHash = () => { const v = VIEW_BY_HASH[(location.hash || '').slice(1)]; if (v) showView(v); };
+window.addEventListener('hashchange', fromHash);
+fromHash();
 const rows = (id) => { const d = dash.data(id); return d.status === 'ok' && Array.isArray(d.data) ? d.data : []; };
 const mk = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
 dash.draw('orgTop', (el) => {
