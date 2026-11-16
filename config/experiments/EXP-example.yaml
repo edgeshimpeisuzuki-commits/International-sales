@@ -1,12 +1,18 @@
-experiment_id: EXP-20261201-subject
+# 1テスト1ファイル。進め方はここで決める(既定値は skills/outreach-ab-test)。変更はPRで2名が確認。
+experiment_id: EXP-20261201-offer
 status: draft            # draft / approved / running / decided / stopped
 client: ogino
 countries: [SG]
-variable: subject        # 変えるのは1つだけ
+variable: offer          # 変えるのは1つだけ。P1は大きく違う案にする
 variants:
-  A: {template_id: OGN-INTRO-01, subject: "Japanese hojicha powder for your seasonal menu"}
-  B: {template_id: OGN-INTRO-01, subject: "<company> x Uji-grown hojicha: a sample for your team"}
-assignment: {unit: company, stratify_by: [country, rank]}
+  A: {template_id: OGN-INTRO-01, offer: "希望価格と数量を聞く"}
+  B: {template_id: OGN-INTRO-02, offer: "サンプル提供を先に申し出る"}
+assignment: {unit: company, stratify_by: [country, rank], keep_through_follow_ups: true}
 primary_metric: positive_reply_rate
+secondary_metrics: [reply_rate, meeting_rate]
 guardrails: {complaints_stop: 1, unsubscribe_rate_stop: 0.02}
-decision: {min_delivered_per_arm: 100, switch_prob: 0.90, confirm_prob: 0.95, max_per_arm: 300}
+decision:
+  method: simple                 # simple(P1) / bayes(P2以降)
+  min_delivered_per_arm: 250
+  switch_if_ratio_at_least: 2.0  # simple のとき
+  # bayes のとき: {min_delivered_per_arm: 100, switch_prob: 0.90, confirm_prob: 0.95, max_per_arm: 300}
