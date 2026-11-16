@@ -7,15 +7,15 @@
    "description": "部門長・課・共通エージェントと部門定義(リポジトリの写し)",
    "source": {
     "kind": "file",
-    "url": "/_blob/1a875dc74c83647973e8b45886082b69",
+    "url": "/_blob/144a097fc1af2251be0479e039b82e8e",
     "name": "agents.json",
     "format": "json"
    },
    "updated": {
-    "at": "2026-11-16T12:30:00Z",
+    "at": "2026-11-16T12:45:00Z",
     "by": "claude"
    },
-   "schedule": "指示文や設定を変えたときに差し替える",
+   "schedule": "エージェント・スキル・設定を変えたPRの取り込み時に ui/build_snapshot.py で作り直して差し替える",
    "edit": {
     "via": "claude",
     "at": "2026-11-16T12:30:00Z"
@@ -30,15 +30,15 @@
    "description": "スキルごとの業務ID・フェーズ・自律度(リポジトリの写し)",
    "source": {
     "kind": "file",
-    "url": "/_blob/12ad00d50221a4fb2a56c80e2ada0be4",
+    "url": "/_blob/4759511f2228249aaeea087e652bab3f",
     "name": "skills.json",
     "format": "json"
    },
    "updated": {
-    "at": "2026-11-16T12:30:00Z",
+    "at": "2026-11-16T12:45:00Z",
     "by": "claude"
    },
-   "schedule": "指示文や設定を変えたときに差し替える",
+   "schedule": "エージェント・スキル・設定を変えたPRの取り込み時に ui/build_snapshot.py で作り直して差し替える",
    "edit": {
     "via": "claude",
     "at": "2026-11-16T12:30:00Z"
@@ -53,15 +53,15 @@
    "description": "標準パラメータとクライアント設定(リポジトリの写し)",
    "source": {
     "kind": "file",
-    "url": "/_blob/9a1a1167a633909bc483654e86d9dfff",
+    "url": "/_blob/e17a4a45cda441a3a042ed1fd1ca61ee",
     "name": "settings.json",
     "format": "json"
    },
    "updated": {
-    "at": "2026-11-16T12:30:00Z",
+    "at": "2026-11-16T12:45:00Z",
     "by": "claude"
    },
-   "schedule": "指示文や設定を変えたときに差し替える",
+   "schedule": "エージェント・スキル・設定を変えたPRの取り込み時に ui/build_snapshot.py で作り直して差し替える",
    "edit": {
     "via": "claude",
     "at": "2026-11-16T12:30:00Z"
@@ -76,15 +76,15 @@
    "description": "11/16のP1全スキルのテストの結果",
    "source": {
     "kind": "file",
-    "url": "/_blob/dbf2c73a476f6c46a9bbbb12da6a1fa3",
+    "url": "/_blob/8a0e8cd29e0ab2dfedb749cc69dbfc15",
     "name": "tests.json",
     "format": "json"
    },
    "updated": {
-    "at": "2026-11-16T12:30:00Z",
+    "at": "2026-11-16T12:45:00Z",
     "by": "claude"
    },
-   "schedule": "指示文や設定を変えたときに差し替える",
+   "schedule": "エージェント・スキル・設定を変えたPRの取り込み時に ui/build_snapshot.py で作り直して差し替える",
    "edit": {
     "via": "claude",
     "at": "2026-11-16T12:30:00Z"

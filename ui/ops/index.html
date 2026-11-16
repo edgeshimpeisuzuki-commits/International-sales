@@ -105,7 +105,7 @@
   <div class="view" id="view-org" hidden>
     <section id="org">
       <h2>組織図</h2>
-      <p class="note">統括(L0)の下に部門長、各部門長の下に業務のスキルがあります。数字はその部門のスキルの数です。出典はGitHubのリポジトリ(11/16時点の写し)。</p>
+      <p class="note">統括(L0)の下に部門長、各部門長の下に業務のスキルがあります。数字はその部門のスキルの数です。出典はGitHubのリポジトリ(mainに取り込んだ時点の写し。日付は「ソース」の出典に出ます)。</p>
       <div class="org" data-source="agents skills">
         <div class="org-top" data-draw="orgTop"></div>
         <div class="org-grid" data-draw="orgGrid"></div>
@@ -119,6 +119,7 @@
       <select class="dash-select" data-draw="deptSelect" aria-label="部門" data-source="agents"></select>
       <div class="card" style="margin-top:var(--cds-gap-md)"><dl class="charter" data-draw="deptCharter" data-source="agents"></dl></div>
       <h2 style="margin-top:var(--cds-gap-lg)">業務(スキル)</h2>
+      <p class="note">自律度の「2名承認」などは定義書の原文のままです。11/16の決定で、承認はすべて1名(鈴木か渡辺)で確定します(docs/common-rules.md)。</p>
       <div class="wrap">
         <table data-source="skills" data-row-key="skill">
           <thead><tr><th data-field="skill">スキル</th><th data-field="業務">業務</th><th data-field="フェーズ">フェーズ</th><th data-field="自律度">自律度</th><th data-field="説明">内容</th></tr></thead>
@@ -131,7 +132,7 @@
   <div class="view" id="view-settings" hidden>
     <section id="settings">
       <h2>設定(標準パラメータとクライアント設定)</h2>
-      <p class="note">正本はリポジトリの config/ と定義書です。この表は11/16時点の写しで、変更したら写しも差し替えます。</p>
+      <p class="note">正本はリポジトリの config/ と定義書です。この表はmainに取り込んだ時点の写しで、設定を変えるたびに作り直します(ui/build_snapshot.py)。</p>
       <div class="wrap">
         <table data-source="settings">
           <thead><tr><th data-field="ファイル">ファイル</th><th data-field="項目">項目</th><th data-field="値">値</th></tr></thead>
@@ -140,7 +141,7 @@
       </div>
     </section>
     <section id="tests">
-      <h2>テスト結果(11/16)</h2>
+      <h2>テスト結果(最新の実施分)</h2>
       <div class="wrap">
         <table data-source="tests" data-row-key="グループ">
           <thead><tr><th data-field="グループ">グループ</th><th data-field="問題数">問題数</th><th data-field="正解">正解</th></tr></thead>
