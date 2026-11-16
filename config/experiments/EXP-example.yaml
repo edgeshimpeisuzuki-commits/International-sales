@@ -1,4 +1,4 @@
-# 1テスト1ファイル。進め方はここで決める(既定値は skills/outreach-ab-test)。変更はPRで2名が確認。
+# 1テスト1ファイル。進め方はここで決める(既定値は skills/outreach-ab-test)。変更はPRで1名が確認。
 experiment_id: EXP-20261201-offer
 status: draft            # draft / approved / running / decided / stopped
 client: ogino
