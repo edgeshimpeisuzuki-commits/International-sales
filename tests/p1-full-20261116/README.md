@@ -17,3 +17,6 @@
 
 ファイル:Gx-inputs(問題)/ Gx-answers(正解)/ Gx-result(解答)/ Gx-score(採点と直す案)。
 返信の分類は別に tests/reply-classify(24件、2回目24/24)。
+
+## 承認人数の読み替え(2026-11-17)
+正解表(G*-answers.md)と問題(G*-inputs.md)は、承認はすべて1名(11/16決定、docs/common-rules.md)に合わせて直した。人への通知(見張り・停止・事故)は2名のまま。採点表(G*-score.md)と結果(G*-result.md)は実施時点の記録なので直していない(2名・代理不可と書いてあっても1名と読む)。
