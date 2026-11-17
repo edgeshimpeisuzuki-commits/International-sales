@@ -55,7 +55,7 @@
   <p class="sub">共通台帳の「承認待ち(ApprovalRequest)」を表示し、承認・却下を台帳に書き込みます。承認・却下とも1名で確定します(11/16決定)。送信はこの画面からは行いません。</p>
 
   <div class="bar">
-    <label for="who">あなた</label>
+    <label for="who">担当者</label>
     <select id="who"><option value="">選んでください</option><option>鈴木</option><option>渡辺</option></select>
     <button id="reload" type="button">再読み込み</button>
     <span id="fresh" class="status"></span>
@@ -66,7 +66,7 @@
 
   <details>
     <summary>書き込む内容</summary>
-    <p>承認:判断に「承認」、決裁者1にあなたの名前、判断日時を書きます(1名で確定)。<br>却下:判断に「却下」、決裁者1にあなたの名前、判断日時、理由を書きます。<br>書き込む直前に台帳を読み直し、対象の行が変わっていれば書き込まずに知らせます。</p>
+    <p>承認:判断に「承認」、決裁者1に担当者の名前、判断日時を書きます(1名で確定)。<br>却下:判断に「却下」、決裁者1に担当者の名前、判断日時、理由を書きます。<br>書き込む直前に台帳を読み直し、対象の行が変わっていれば書き込まずに知らせます。</p>
   </details>
 </main>
 
@@ -138,7 +138,7 @@ function render() {
     const reject = el('button', {class: 'reject', type: 'button'}, '却下');
     if (!me) approve.disabled = true;
     if (!me) reject.disabled = true;
-    if (!me) status.textContent = '上の「あなた」を選ぶと操作できます。';
+    if (!me) status.textContent = '上の「担当者」を選ぶと操作できます。';
     approve.addEventListener('click', () => act(v[COL.id], 'approve', reason, status, [approve, reject]));
     reject.addEventListener('click', () => act(v[COL.id], 'reject', reason, status, [approve, reject]));
     return el('div', {class: 'card', id: 'ap-' + v[COL.id]},
